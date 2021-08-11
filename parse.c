@@ -1,64 +1,60 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/08/11 18:32:11 by tbigot            #+#    #+#             */
+/*   Updated: 2021/08/11 18:38:20 by tbigot           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-char *ft_strjoin_with_sep(char *str1, char *str2, char *sep)
+static char	*get_file_in_array(int fd)
 {
-    char *final_string;
-    char *tmp;
+	int	 i;
+	char	*line;
+	char	*full_line;
+	char	*tmp;
 
-    if (!(tmp = ft_strjoin(str1, sep)))
-    {
-        return NULL;
-    }
-    if (!(final_string = ft_strjoin(tmp, str2)))
-    {
-        free(tmp);
-        return NULL;
-    }
-
-    return final_string;
+	while ((i = get_next_line(fd, &line)) > 0)
+	{
+		tmp = full_line;
+		if (!(full_line = ft_strjoin_with_sep(tmp, line, "/")))
+		{
+			return NULL;
+		}
+		free(line);
+		free(tmp);
+	}
+	if (i == -1)
+	{
+		free(full_line);
+		return NULL;
+	}
+	return full_line;
 }
 
-char    *get_file_in_array(int fd)
+static void	get_map_dim(char *array_map, int dim[2])
 {
-    int     i;
-    char    *line;
-    char    *full_line
-    char    *tmp;
-
-    while ((i = get_next_line(fd, &line)) > 0)
-    {
-        tmp = full_line;
-        if (!(full_line = ft_strjoin_with_sep(tmp, line, "/")))
-        {
-            return NULL;
-        }
-        free(line);
-        free(tmp);
-    }
-    if (i == -1)
-    {
-        free(full_line);
-        return NULL;
-    }
-    return full_line;
-}
-
-void    get_map_dim(int dim[2])
-{
-    //:wqle proto est bon
+	dim[0] = how_many_sep(array_map, "/");
+	dim[1] = size_between_sep(array_map, "/");
 }
 
 int parse_fdf(int fd, t_map *map)
 {
-    char *array_map;
+	(void)map;
+	char *array_map;
 
-    if (!(array_map = get_file_in_array(fd)))
-    {
-        //write something
-        return 1;
-    }
-    map->dim = get_map_dim(array_map);
-    pointer_to_map(pointer_map, map);
-
+	if (!(array_map = get_file_in_array(fd)))
+	{
+		//write something
+		return (1);
+	}
+	get_map_dim(array_map, map->dim);
+	//pointer_to_map(pointer_map, map);
+	return (0);
 
 }

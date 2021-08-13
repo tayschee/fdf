@@ -1,18 +1,18 @@
 EXEC = fdf
 LIB = libft.a
 
-SRCS = main.c parse.c utils.c
+SRCS = main.c parse.c utils.c fdf.c ft_mlx.c
 
-OBJS = ${SRCS:.c=.o}
+OBJS = $(SRCS:.c=.o)
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -I ./libft
+CFLAGS = -I ./libft -Imlx #-Wall -Werror -Wextra -I ./libft
 
-all : $(OBJS)
+all : $(EXEC)
+
+$(EXEC) : $(OBJS)
 	make -C libft
-	gcc -o $(EXEC) $(OBJS) -I $(LIB)
-
-$(EXEC) : all
+	gcc -o $(EXEC) $(OBJS) -Lmlx -lmlx -framework OpenGL -framework AppKit -L ./libft/ -lft
 
 clean : 
 	rm -f $(OBJS)

@@ -6,7 +6,7 @@
 /*   By: tbigot <tbigot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 18:32:00 by tbigot            #+#    #+#             */
-/*   Updated: 2021/08/11 18:38:55 by tbigot           ###   ########.fr       */
+/*   Updated: 2021/08/12 17:40:23 by tbigot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,18 @@ char *ft_strjoin_with_sep(char *str1, char *str2, char *sep)
 	return final_string;
 }
 
-size_t	how_many_sep(char *str, char c)
+size_t count_number_of(char *txt, char c_search)
 {
-	size_t	i;
-	size_t	count;
+	size_t count;
+	size_t i;
 
 	i = 0;
-	while (str[i])
+	count = 0;
+	while (txt[i])
 	{
-		++i;
-		if (str[i] == c)
+		if (c_search == txt[i])
 			++count;
+		++i;
 	}
-	return (count);
-}
-
-size_t	size_between_sep(char *str, char c)
-{
-	while ()
+	return count;
 }
